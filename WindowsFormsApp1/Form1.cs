@@ -52,9 +52,11 @@ namespace GestionBancariaAppNS
         public int realizarIngreso(double cantidad)
         {
             if (cantidad < 0) //AMR2223 corregido error
-                //return ERR_CANTIDAD_NO_VALIDA;
-                //throw new ArgumentOutOfRangeException("Cantidad no válida");
+                              //return ERR_CANTIDAD_NO_VALIDA;
+                              //throw new ArgumentOutOfRangeException("Cantidad no válida");
+            { 
                 throw new ArgumentOutOfRangeException(ERR_CANTIDAD_NO_VALIDA);
+            }
             saldo += cantidad; //AMR2223 corregido error
             return 0;
         }
@@ -94,9 +96,9 @@ namespace GestionBancariaAppNS
                 }
                 catch (Exception error1)
                 {
-                    if (error1.Message.Equals(ERR_SALDO_INSUFICIENTE))
+                    if (error1.Message.Contains(ERR_SALDO_INSUFICIENTE))
                         MessageBox.Show("No se ha podido realizar la operación (¿Saldo insuficiente ?)");
-                    else if (error1.Message.Equals(ERR_CANTIDAD_NO_VALIDA))
+                    else if (error1.Message.Contains(ERR_CANTIDAD_NO_VALIDA))
                         MessageBox.Show("Cantidad no válida, sólo se admiten cantidades positivas.");
                 }
                 txtSaldo.Text = obtenerSaldo().ToString();
@@ -110,7 +112,7 @@ namespace GestionBancariaAppNS
                 }
                 catch (Exception error2)
                 {
-                    if (error2.Message.Equals(ERR_CANTIDAD_NO_VALIDA))
+                    if (error2.Message.Contains(ERR_CANTIDAD_NO_VALIDA))
                         MessageBox.Show("Cantidad no válida, sólo se admiten cantidades positivas.");
                 }
                 txtSaldo.Text = obtenerSaldo().ToString();

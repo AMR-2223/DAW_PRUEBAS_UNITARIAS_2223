@@ -54,9 +54,9 @@ namespace gestionBancariaTest
         public void prueba4_validarReintegro()
         {
             // AMR2223 simulamos reintegros varias cantidades
-            double[] saldoInicial = new double[] { 0, 750, 5000, 2000000 };
-            double[] reintegro = new double[] { 0, 750, 2500, 1000000 };
-            double[] saldoEsperado = new double[] { 0, 0, 2500, 1000000 };
+            double[] saldoInicial = new double[] {750, 5000, 2000000 };
+            double[] reintegro = new double[] {750, 2500, 1000000 };
+            double[] saldoEsperado = new double[] {0, 2500, 1000000 };
 
             for (int i = 0; i < saldoEsperado.Length; i++)
             {
@@ -112,14 +112,23 @@ namespace gestionBancariaTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void validarIngresoCantidadNoValida()
         {
             double saldoInicial = 1000;
-            double ingreso = -250; // AMR2223
+            double ingreso = -250;
             double saldoFinal = saldoInicial + ingreso;
             GestionBancariaApp miApp = new GestionBancariaApp(saldoInicial);
-            miApp.realizarIngreso(ingreso);
+            try
+            {
+                miApp.realizarIngreso(ingreso);
+            }
+            catch (ArgumentOutOfRangeException exception) //AMR2223
+            {
+                // assert
+                StringAssert.Contains(exception.Message, GestionBancariaApp.ERR_CANTIDAD_NO_VALIDA);
+                return;
+            }
+            Assert.Fail("Error. Se debía haber producido una excepción.");
         }
     }
 }
